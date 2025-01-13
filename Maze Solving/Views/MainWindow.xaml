@@ -1,0 +1,122 @@
+﻿<Window x:Class="Maze_Solving.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Maze_Solving"
+        xmlns:vm="clr-namespace:Maze_Solving.ViewModels"
+        xmlns:converters="clr-namespace:Maze_Solving.Views.Converters"
+        mc:Ignorable="d"
+        Title="Maze Solving" Height="800" Width="1000"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- Data Context (ViewModel) -->
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="AlgorithmButtonStyle">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#3FB0AB"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <converters:CellTypeColorConverter x:Key="CellTypeColorConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Column Definitions -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Row Definitions -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*" MinHeight="600"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Maze Grid -->
+        <Grid Grid.Row="1" Grid.Column="0">
+            
+            <Grid VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  DataContext="{Binding MazeViewModel}"
+                  Height="{Binding MazeHeight, Mode=OneWay}"
+                  Width="{Binding MazeWidth, Mode=OneWay}"
+                  x:Name="MazeGrid">
+                <ItemsControl ItemsSource="{Binding ListCells}">
+                    
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Rectangle DataContext="{Binding}"
+                                       Width="{Binding CellSize, Mode=OneWay}"
+                                       Height="{Binding CellSize, Mode=OneWay}"
+                                       Fill="{Binding CellType, Mode=OneWay, Converter={StaticResource CellTypeColorConverter}}">               
+
+                            </Rectangle>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Grid>
+        
+        <!-- Tool bar -->
+        <StackPanel Grid.Row="0" Grid.Column="0"
+                    Orientation="Horizontal"
+                    Margin="10">
+            <Button Content="Select File"
+                    Background="LightBlue"
+                    Width="100" Height="30"
+                    Margin="10" FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Command="{Binding SelectFileCommand}"/>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Speed" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding MazeViewModel.Speed, Mode=TwoWay}"
+                         Width="50"
+                         Height="20"
+                         Margin="10"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!-- Algothrisms Button -->
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center"
+                    Grid.Row="1" Grid.Column="1">
+            <Button Style="{StaticResource AlgorithmButtonStyle}"
+                    Command="{Binding MazeViewModel.RunBFSCommand}"
+                    Content="BFS"/>
+
+            <Button Style="{StaticResource AlgorithmButtonStyle}"
+                    Command="{Binding MazeViewModel.RunDFSCommand}"
+                    Content="DFS"/>
+
+            <Button Style="{StaticResource AlgorithmButtonStyle}"
+                    Command="{Binding MazeViewModel.RunUCSCommand}"
+                    Content="UCS"/>
+
+            <Button Style="{StaticResource AlgorithmButtonStyle}"
+                    Command="{Binding MazeViewModel.RunBestFSCommand}"
+                    Content="BestFS"/>
+
+            <Button Style="{StaticResource AlgorithmButtonStyle}"
+                    Command="{Binding MazeViewModel.RunAStarCommand}"
+                    Content="A*"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

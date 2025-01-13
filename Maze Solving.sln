@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze Solving", "Maze Solving\Maze Solving.csproj", "{84BE4B57-09A6-4719-A8D4-88E47AF2240A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84BE4B57-09A6-4719-A8D4-88E47AF2240A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BE4B57-09A6-4719-A8D4-88E47AF2240A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BE4B57-09A6-4719-A8D4-88E47AF2240A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BE4B57-09A6-4719-A8D4-88E47AF2240A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D833AC7-AF5E-4A48-9519-31F1DB18FD32}
+	EndGlobalSection
+EndGlobal
