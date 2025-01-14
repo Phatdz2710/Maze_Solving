@@ -116,7 +116,26 @@
             <Button Style="{StaticResource AlgorithmButtonStyle}"
                     Command="{Binding MazeViewModel.RunAStarCommand}"
                     Content="A*"/>
+            <Button Style="{StaticResource AlgorithmButtonStyle}"
+                     Command="{Binding MazeViewModel.RunAStarPlusCommand}"
+                     Content="A* Plus"/>
         </StackPanel>
 
+        <!-- Algorithms Cost -->
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Margin="30 0 30 0" FontSize="15" VerticalAlignment="Center">
+                <Run Text="Total Time:" FontWeight="SemiBold"/>
+                <Run Text="{Binding MazeViewModel.TotalTime, Mode=OneWay}"/>
+                <Run Text="ms"/>
+            </TextBlock>
+            <TextBlock Margin="30 0 30 0" FontSize="15" VerticalAlignment="Center" >
+    <Run Text="Total Node:" FontWeight="SemiBold"/>
+    <Run Text="{Binding MazeViewModel.TotalCost, Mode=OneWay}"/>
+            </TextBlock>
+            <TextBlock Margin="30 0 30 0" FontSize="15" VerticalAlignment="Center">
+    <Run Text="Path Node:" FontWeight="SemiBold"/>
+    <Run Text="{Binding MazeViewModel.PathCost, Mode=OneWay}"/>
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </Window>

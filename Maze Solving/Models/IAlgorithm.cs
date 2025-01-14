@@ -17,6 +17,9 @@ namespace Maze_Solving.Models
         /// </summary>
         protected Maze? _maze;
 
+        public int TotalCost { get; set; } = 0;
+        public int PathCost { get; set; } = 0;
+        public long TotalTime { get; set; } = 0;
         protected class Node : IComparable<Node>
         {
             public int X { get; set; }

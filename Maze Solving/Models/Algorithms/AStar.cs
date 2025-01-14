@@ -17,6 +17,10 @@ namespace Maze_Solving.Models.Algorithms
                 yield break;
             }
 
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+            TotalCost = 0;
+
             // Create a visited array
             var visited = new bool[_maze.MazeHeight, _maze.MazeWidth];
 
@@ -51,6 +55,8 @@ namespace Maze_Solving.Models.Algorithms
                 {
                     MessageBox.Show("Path found");
                     Head = current;
+                    stopwatch.Stop();
+                    TotalTime = stopwatch.ElapsedMilliseconds;
                     yield break;
                 }
 
@@ -86,11 +92,15 @@ namespace Maze_Solving.Models.Algorithms
                         continue;
                     }
 
+                    TotalCost += 1;
                     sortDict[newNode] = Heuristic(newNode);
 
                     visited[x, y] = true;
                 }
             }
+
+            stopwatch.Stop();
+            TotalTime = stopwatch.ElapsedMilliseconds;
 
             MessageBox.Show("Path not found");
         }
@@ -134,12 +144,13 @@ namespace Maze_Solving.Models.Algorithms
             {
                 yield break;
             }
-
+            PathCost = 0;
             var current = Head;
             while (current != null)
             {
                 yield return (current.X, current.Y);
                 current = current.Parent;
+                PathCost += 1;
             }
         }
     }

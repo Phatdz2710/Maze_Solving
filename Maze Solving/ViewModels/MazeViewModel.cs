@@ -26,6 +26,10 @@ namespace Maze_Solving.ViewModels
         private int _xStart = 0;
         private int _yStart = 0;
 
+        private int _totalCost = 0;
+        private int _pathCost = 0;
+        private long _totalTime = 0;
+
         private Maze? _maze;
 
         private SearchAlgorithm? _algorithm;
@@ -35,6 +39,7 @@ namespace Maze_Solving.ViewModels
         private SearchAlgorithm UCS = new UCS();
         private SearchAlgorithm BestFS = new BestFS();
         private SearchAlgorithm AStar = new AStar();
+        private SearchAlgorithm AStarPlus = new AStarPlus();
 
 
         /// <summary>
@@ -89,6 +94,44 @@ namespace Maze_Solving.ViewModels
             }
         }
 
+        /// <summary>
+        /// Total cost of the algorithm
+        /// </summary>
+        public int TotalCost
+        {
+            get => _totalCost;
+            set
+            {
+                _totalCost = value; OnPropertyChanged(nameof(TotalCost));
+            }
+        }
+
+        /// <summary>
+        /// Total cost of the path
+        /// </summary>
+        public int PathCost
+        {
+            get => _pathCost;
+            set
+            {
+                _pathCost = value; 
+                OnPropertyChanged(nameof(PathCost));
+            }
+        }
+
+        /// <summary>
+        /// Total time of the algorithm
+        /// </summary>
+        public long TotalTime
+        {
+            get => _totalTime;
+            set
+            {
+                _totalTime = value;
+                OnPropertyChanged(nameof(TotalTime));
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -97,6 +140,7 @@ namespace Maze_Solving.ViewModels
         public ICommand RunUCSCommand { get; }
         public ICommand RunBestFSCommand { get; }
         public ICommand RunAStarCommand { get; }
+        public ICommand RunAStarPlusCommand { get; }
 
         #endregion
 
@@ -112,6 +156,7 @@ namespace Maze_Solving.ViewModels
             RunUCSCommand = new RelayCommand(runUCSCommand);
             RunBestFSCommand = new RelayCommand(runBestFSCommand);
             RunAStarCommand = new RelayCommand(runAStarCommand);
+            RunAStarPlusCommand = new RelayCommand(runAStarPlusCommand);
 
         }
 
@@ -312,6 +357,20 @@ namespace Maze_Solving.ViewModels
             runSearchAlgorithms();
         }
 
+        /// <summary>
+        /// Set algorithm to UCS and run
+        /// </summary>
+        private void runAStarPlusCommand()
+        {
+            // Check if algorithm is initialized
+            if (_algorithm != AStarPlus)
+            {
+                _algorithm = AStarPlus;
+            }
+
+            runSearchAlgorithms();
+        }
+
 
         /// <summary>
         /// Run search algorithms with _algorithm
@@ -361,6 +420,10 @@ namespace Maze_Solving.ViewModels
                     ListCells[step.X * _maze.MazeWidth + step.Y].CellType = CellType.Path;
                     await Task.Delay(Speed);
                 }
+
+                TotalCost = _algorithm.TotalCost;
+                PathCost = _algorithm.PathCost;
+                TotalTime = _algorithm.TotalTime;
 
                 _signal.Release();
             }
