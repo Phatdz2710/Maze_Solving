@@ -62,12 +62,14 @@
                     
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Rectangle DataContext="{Binding}"
+                            <Button DataContext="{Binding}"
                                        Width="{Binding CellSize, Mode=OneWay}"
-                                       Height="{Binding CellSize, Mode=OneWay}"
-                                       Fill="{Binding CellType, Mode=OneWay, Converter={StaticResource CellTypeColorConverter}}">               
+                                       Height="{Binding CellSize, Mode=OneWay}" BorderThickness="0"
+                                       Background="{Binding CellType, Mode=OneWay, Converter={StaticResource CellTypeColorConverter}}"
+                                    Command="{Binding SelectStartEndPoint}"
+                                    CommandParameter="{Binding Position}">               
 
-                            </Rectangle>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -129,13 +131,18 @@
                 <Run Text="ms"/>
             </TextBlock>
             <TextBlock Margin="30 0 30 0" FontSize="15" VerticalAlignment="Center" >
-    <Run Text="Total Node:" FontWeight="SemiBold"/>
-    <Run Text="{Binding MazeViewModel.TotalCost, Mode=OneWay}"/>
+        <Run Text="Total Node:" FontWeight="SemiBold"/>
+        <Run Text="{Binding MazeViewModel.TotalCost, Mode=OneWay}"/>
             </TextBlock>
             <TextBlock Margin="30 0 30 0" FontSize="15" VerticalAlignment="Center">
     <Run Text="Path Node:" FontWeight="SemiBold"/>
     <Run Text="{Binding MazeViewModel.PathCost, Mode=OneWay}"/>
             </TextBlock>
+
+            <StackPanel VerticalAlignment="Center" Margin="50 0 0 0">
+                <RadioButton x:Name="StartPointCheckBox" Content="Choose End Point" Margin="0,10,0,10" IsChecked="{Binding MazeViewModel.IsStartPointSelected, Mode=TwoWay}"/>
+                <RadioButton x:Name="EndPointCheckBox" Content="Choose Start Point" Margin="0,10,0,10" IsChecked="{Binding MazeViewModel.IsEndPointSelected, Mode=TwoWay}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

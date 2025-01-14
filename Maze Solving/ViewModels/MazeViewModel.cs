@@ -41,6 +41,9 @@ namespace Maze_Solving.ViewModels
         private SearchAlgorithm AStar = new AStar();
         private SearchAlgorithm AStarPlus = new AStarPlus();
 
+        private bool _isChooseStartPoint = true;
+        private bool _isChooseEndPoint = false;
+
 
         /// <summary>
         /// Semaphore for the signal to stop the algorithm
@@ -132,6 +135,32 @@ namespace Maze_Solving.ViewModels
             }
         }
 
+        /// <summary>
+        /// Choose start point
+        /// </summary>
+        public bool IsStartPointSelected
+        {
+            get => _isChooseStartPoint;
+            set
+            {
+                _isChooseStartPoint = value;
+                OnPropertyChanged(nameof(IsStartPointSelected));
+            }
+        }
+
+        /// <summary>
+        /// Choose end point
+        /// </summary>
+        public bool IsEndPointSelected
+        {
+            get => _isChooseEndPoint;
+            set
+            {
+                _isChooseEndPoint = value;
+                OnPropertyChanged(nameof(IsEndPointSelected));
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -141,6 +170,7 @@ namespace Maze_Solving.ViewModels
         public ICommand RunBestFSCommand { get; }
         public ICommand RunAStarCommand { get; }
         public ICommand RunAStarPlusCommand { get; }
+        public ICommand SelectStartEndPoint { get; }
 
         #endregion
 
@@ -157,6 +187,7 @@ namespace Maze_Solving.ViewModels
             RunBestFSCommand = new RelayCommand(runBestFSCommand);
             RunAStarCommand = new RelayCommand(runAStarCommand);
             RunAStarPlusCommand = new RelayCommand(runAStarPlusCommand);
+            SelectStartEndPoint = new RelayCommand<KeyValuePair<int, int>>(selectStartEndPoint);
 
         }
 
@@ -268,7 +299,7 @@ namespace Maze_Solving.ViewModels
                     {
                         for (int j = 0; j < rows[i].Length; j++)
                         {
-                            ListCells.Add(new CellViewModel()
+                            ListCells.Add(new CellViewModel(SelectStartEndPoint)
                             {
                                 CellSize = cellSize,
                                 Position = new KeyValuePair<int, int>(i, j),
@@ -432,6 +463,34 @@ namespace Maze_Solving.ViewModels
                 _signal.Release();
                 MessageBox.Show("Your maze is not solvable", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+        private void selectStartEndPoint(KeyValuePair<int, int> position)
+        {
+            if (_maze == null) return;
+            if (_maze.ListCells[position.Key][position.Value] == '#') return;
+
+            if (IsStartPointSelected)
+            {
+                ListCells[_maze.Start.Key * _maze.MazeWidth + _maze.Start.Value].CellType = CellType.Empty;
+                ListCells[position.Key * _maze.MazeWidth + position.Value].CellType = CellType.Start;
+                _maze.ListCells[position.Key] = _maze.ListCells[position.Key].Remove(position.Value, 1).Insert(position.Value, "S");
+                _maze.ListCells[_maze.Start.Key] = _maze.ListCells[_maze.Start.Key].Remove(_maze.Start.Value, 1).Insert(_maze.Start.Value, ".");
+
+                _maze.Start = position;
+                
+            }
+            else
+            {
+                ListCells[_maze.End.Key * _maze.MazeWidth + _maze.End.Value].CellType = CellType.Empty;
+                ListCells[position.Key * _maze.MazeWidth + position.Value].CellType = CellType.End;
+                _maze.ListCells[position.Key] = _maze.ListCells[position.Key].Remove(position.Value, 1).Insert(position.Value, "E");
+                _maze.ListCells[_maze.End.Key] = _maze.ListCells[_maze.End.Key].Remove(_maze.End.Value, 1).Insert(_maze.End.Value, ".");
+                _maze.End = position;
+            }
+
+            ResetMaze();
         }
 
         /// <summary>

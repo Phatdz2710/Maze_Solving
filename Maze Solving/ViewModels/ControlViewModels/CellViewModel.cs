@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Maze_Solving.ViewModels.ControlViewModels
 {
@@ -56,8 +57,14 @@ namespace Maze_Solving.ViewModels.ControlViewModels
 
         #endregion
 
-        public CellViewModel()
+        #region Commands
+
+        public ICommand SelectStartEndPoint { get; }
+        #endregion
+
+        public CellViewModel(ICommand selectStartEndPoint)
         {
+            SelectStartEndPoint = selectStartEndPoint;
         }
     }
 }
